@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/authFragment">
+
+    <fragment
+        android:id="@+id/authFragment"
+        android:name="md.hackaton.aasocialrecovery.screen.auth.AuthFragment"
+        android:label="AuthFragment"
+        tools:layout="@layout/fragment_auth">
+        <action
+            android:id="@+id/action_authFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/recoveryFragment"
+        android:name="md.hackaton.aasocialrecovery.screen.recovery.RecoveryFragment"
+        android:label="RecoveryFragment"
+        tools:layout="@layout/fragment_recovery">
+        <action
+            android:id="@+id/action_recoveryFragment_to_scanQRFragment"
+            app:destination="@id/scanQRFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/scanQRFragment"
+        android:name="md.hackaton.aasocialrecovery.screen.scan.ScanQRFragment"
+        android:label="ScanQRFragment"
+        tools:layout="@layout/fragment_scan_qr">
+        <argument
+            android:name="requestCode"
+            app:argType="string"
+            android:defaultValue="SCAN_QR_REQUEST_CODE" />
+        <argument
+            android:name="resultField"
+            app:argType="string"
+            android:defaultValue="data" />
+    </fragment>
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="md.hackaton.aasocialrecovery.screen.home.HomeFragment"
+        android:label="HomeFragment"
+        tools:layout="@layout/fragment_home">
+        <action
+            android:id="@+id/action_homeFragment_to_recoveryFragment"
+            app:destination="@id/recoveryFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_setupRecoveryFragment"
+            app:destination="@id/setupRecoveryFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/setupRecoveryFragment"
+        android:name="md.hackaton.aasocialrecovery.screen.setup.SetupRecoveryFragment"
+        android:label="SetupRecoveryFragment"
+        tools:layout="@layout/fragment_setup_recovery">
+        <action
+            android:id="@+id/action_setupRecoveryFragment_to_scanQRFragment"
+            app:destination="@id/scanQRFragment" />
+    </fragment>
+</navigation>

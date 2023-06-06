@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:paddingHorizontal="24dp">
+
+
+
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/addressIL"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="32dp">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/addressET"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Address"
+            />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/addFreezerBtn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Add freezer"
+        android:layout_marginTop="24dp"
+        app:layout_constraintTop_toBottomOf="@+id/addressIL"
+        />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/hashIL"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/addFreezerBtn"
+        android:layout_marginTop="24dp">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/hashET"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Agent hash"
+            />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/addHashBtn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Add Agent"
+        android:layout_marginTop="24dp"
+        app:layout_constraintTop_toBottomOf="@+id/hashIL"
+        />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/accountsRV"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/addHashBtn"
+        android:layout_marginTop="24dp" />
+
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/submitBtn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Submit"
+        android:layout_marginTop="24dp"
+        app:layout_constraintTop_toBottomOf="@id/accountsRV"
+        />
+
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/scanAddressBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/Widget.Material3.Button.TextButton"
+        android:text="Scan"
+        app:layout_constraintBottom_toBottomOf="@+id/addressIL"
+        app:layout_constraintEnd_toEndOf="@+id/addressIL"
+        app:layout_constraintTop_toTopOf="@+id/addressIL" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/scanHashBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/Widget.Material3.Button.TextButton"
+        android:text="Scan"
+        app:layout_constraintBottom_toBottomOf="@+id/hashIL"
+        app:layout_constraintEnd_toEndOf="@+id/hashIL"
+        app:layout_constraintTop_toTopOf="@+id/hashIL" />
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
