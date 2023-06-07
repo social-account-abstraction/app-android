@@ -59,12 +59,8 @@ class HomeViewModelImpl(
         viewModelScope.launch(Dispatchers.IO) {
             try {
                 loading.emit(true)
-                deployAbstractionAddressUseCase.invoke().collect { result ->
-                    if (result.error != null) {
-                        throw IllegalArgumentException(result.error.message)
-                    } else {
-                        deployResult.emit(result.result ?: "")
-                    }
+                deployAbstractionAddressUseCase.invoke().collect { transactionHash ->
+                    deployResult.emit(transactionHash ?: "null")
                 }
             } catch (e: Exception) {
                 errorEvent.emit(e)
@@ -79,8 +75,8 @@ class HomeViewModelImpl(
         viewModelScope.launch(Dispatchers.IO) {
             try {
                 loading.emit(true)
-                freezeAccountUseCase.invoke().collect { hash ->
-                    freezeResult.emit(hash)
+                freezeAccountUseCase.invoke().collect { transactionHash ->
+                    freezeResult.emit(transactionHash ?: "null")
                 }
             } catch (e: Exception) {
                 errorEvent.emit(e)

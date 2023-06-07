@@ -1,5 +1,6 @@
 package md.hackaton.aasocialrecovery.screen.home
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -64,6 +65,17 @@ class HomeFragment: BaseFragment<HomeViewModel, FragmentHomeBinding>() {
                     RecoveryDataListAdapter.ItemModel("aa_address", "Abstraction Address:", data.abstractionAddress),
                     RecoveryDataListAdapter.ItemModel("aa_address_deployed", "Abstraction Address Deployed:", data.isAbstractionDeployed.toString()),
                 )
+
+                viewBinding.requestAgentBtn.setOnClickListener {
+                    val sendIntent: Intent = Intent().apply {
+                        action = Intent.ACTION_SEND
+                        putExtra(Intent.EXTRA_TEXT, "https://dev-pqvbe3y0djn7ccoa.us.auth0.com/authorize?response_type=code&client_id=iTjLUV8droepK6WGbsgDY5Ikjd6amPMt&redirect_uri=https://socialrecovery.mind-dev.com/auth0&scope=openid%20profile%20email&state=${data.abstractionAddress}")
+                        type = "text/plain"
+                    }
+
+                    val shareIntent = Intent.createChooser(sendIntent, null)
+                    startActivity(shareIntent)
+                }
             }
         }
 

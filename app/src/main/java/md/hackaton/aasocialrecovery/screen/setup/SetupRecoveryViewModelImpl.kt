@@ -41,12 +41,8 @@ class SetupRecoveryViewModelImpl(
                 setupSocialRecoveryUseCase.invoke(SetupSocialRecoveryUseCase.Params(
                     address = freezers,
                     agentHash = agents
-                )).collect { result ->
-                    if (result.error != null) {
-                        throw IllegalStateException(result.error.message)
-                    } else {
-                        success.emit(result.result ?: "TX hash is missing")
-                    }
+                )).collect { transactionHash ->
+                    success.emit(transactionHash ?: "null")
                 }
             } catch (e: Exception) {
                 e.printStackTrace()
@@ -79,6 +75,4 @@ class SetupRecoveryViewModelImpl(
             data.emit(tmp)
         }
     }
-
-
 }

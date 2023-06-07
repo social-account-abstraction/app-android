@@ -33,6 +33,13 @@
                 android:text="Deploy" />
 
             <com.google.android.material.button.MaterialButton
+                android:id="@+id/requestAgentBtn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="24dp"
+                android:text="Request Agents" />
+
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/setupRecoveryBtn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -52,6 +59,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="24dp"
                 android:text="Freeze" />
+
+
+
 
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>

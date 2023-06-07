@@ -4,6 +4,7 @@ import com.google.gson.Gson
 import md.hackaton.aasocialrecovery.Constants
 import md.hackaton.aasocialrecovery.contract.ContractFactory
 import md.hackaton.aasocialrecovery.data.remote.service.JsonRpcService
+import md.hackaton.aasocialrecovery.domain.repository.TransactionRepository
 import md.hackaton.aasocialrecovery.domain.repository.WalletRepository
 import md.hackaton.aasocialrecovery.domain.usecase.DeployAbstractionAddressUseCase
 import md.hackaton.aasocialrecovery.domain.usecase.FreezeAccountUseCase
@@ -41,8 +42,7 @@ val appModule = module {
     }
 
     single { get<Retrofit>(rpcRetrofitQualifier).create(JsonRpcService::class.java) }
-
-
+    single { TransactionRepository(get(), get()) }
     single { WalletRepository(get()) }
 
     viewModel { AuthViewModelImpl(get()) }
@@ -68,7 +68,7 @@ val appModule = module {
             get(), get(), get(),
         ),
         freezeAccountUseCase = FreezeAccountUseCase(
-            get(), get(),
+            get(), get(), get()
         )
     ) }
 }

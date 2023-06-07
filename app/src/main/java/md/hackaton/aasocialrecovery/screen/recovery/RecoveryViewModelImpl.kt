@@ -66,12 +66,8 @@ class RecoveryViewModelImpl(
                 recoverAccountUseCase.invoke(RecoverAccountUseCase.Params(
                     currentAgentsHashSet = currentAgentHashes,
                     newAgentsHashSet = newAgentHashes
-                )).collect { result ->
-                    if (result.error != null) {
-                        throw IllegalStateException(result.error.message)
-                    } else {
-                        successEvent.emit(result.result ?: "TX hash missing")
-                    }
+                )).collect { transactionHash ->
+                    successEvent.emit(transactionHash ?: "null")
                 }
             } catch (e: Exception) {
                 e.printStackTrace()

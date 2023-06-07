@@ -9,6 +9,7 @@ import md.hackaton.aasocialrecovery.contract.ContractFactory
 import md.hackaton.aasocialrecovery.data.remote.model.request.JsonRpcCallRequest
 import md.hackaton.aasocialrecovery.data.remote.model.response.JsonRpcCallResponse
 import md.hackaton.aasocialrecovery.data.remote.service.JsonRpcService
+import md.hackaton.aasocialrecovery.domain.repository.TransactionRepository
 import md.hackaton.aasocialrecovery.domain.repository.WalletRepository
 import md.hackaton.aasocialrecovery.utils.Bytes32Utils
 import org.web3j.crypto.Hash
@@ -19,26 +20,22 @@ import java.math.BigInteger
 
 class SetupSocialRecoveryUseCase(
     private val walletRepository: WalletRepository,
-    private val rpcService: JsonRpcService,
-    private val contractFactory: ContractFactory
-): AbstractUseCaseWithParams<SetupSocialRecoveryUseCase.Params, JsonRpcCallResponse>() {
+    private val contractFactory: ContractFactory,
+    private val transactionRepository: TransactionRepository,
+): AbstractUseCaseWithParams<SetupSocialRecoveryUseCase.Params, String?>() {
 
     data class Params(
         val address: List<String>,
         val agentHash: List<String>
     )
 
-    override fun invoke(p: Params): Flow<JsonRpcCallResponse> = flow {
+    override fun invoke(p: Params): Flow<String?> = flow {
         val credentials = walletRepository.getCredentials()
 
         val simpleAccountApi = SimpleAccountApi(contractFactory.web3j, credentials, walletRepository.getAbstractionAddress())
         val accountAddress = simpleAccountApi.getAccountAddress()
-
         val accountContract = contractFactory.getSocialRecoveryAccountContract(accountAddress, credentials);
-
         val newSocialRecoveryAgents = p.agentHash.map { Numeric.hexStringToByteArray(Hash.sha3(it)) }
-
-        println("newSocialRecoveryAgents = ${newSocialRecoveryAgents.map { Numeric.toHexString(it) }.joinToString { ", " }}")
         val newAlertAgents = p.address
 
         val data = accountContract.initSocialRecovery(
@@ -54,35 +51,11 @@ class SetupSocialRecoveryUseCase(
             ), DefaultBlockParameterName.LATEST
         ).send()
 
-        println("isReverted = " + ethCallResult.isReverted)
-        println("revertReason = " + ethCallResult.revertReason)
-        println("value = " + ethCallResult.value)
-
         if (ethCallResult.isReverted) {
             throw IllegalArgumentException(ethCallResult.revertReason)
         }
 
-        val defaultMaxPriorityFeePerGas =  BigInteger.valueOf(2900000000)
-
-        val transactionDetails = TransactionDetailsForUserOp(
-            target = accountContract.contractAddress, // eth wallet owner address
-            data = data, // encoded contract method call
-            maxPriorityFeePerGas = defaultMaxPriorityFeePerGas,
-            maxFeePerGas = defaultMaxPriorityFeePerGas
-        )
-
-        val userOp = simpleAccountApi.createSignedUserOp(transactionDetails)
-
-        val requestBody = JsonRpcCallRequest(
-            method = "eth_sendUserOperation",
-            params = listOf(
-                userOp,
-                SimpleAccountApi.entryPointAddress
-            )
-        )
-
-
-        val response = rpcService.callRpc(requestBody)
-        emit(response)
+        val hash = transactionRepository.sendBundlerRequest(credentials, walletRepository.getAbstractionAddress(), data)
+        emit(hash)
     }
 }
